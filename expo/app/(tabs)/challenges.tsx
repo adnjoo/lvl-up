@@ -1,7 +1,10 @@
+import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, FlatList } from 'react-native';
+
+const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 
 const defaultChallenges = [
   { id: '1', title: 'Complete a Workout', progress: 0, total: 1, reward: 100, completed: false },
@@ -34,21 +37,67 @@ export default function ChallengesScreen() {
         if (userData.challenges && userData.challenges.length > 0) {
           setChallenges(userData.challenges);
         } else {
-          await setDoc(
-            userDocRef,
-            { challenges: defaultChallenges, archivedChallenges: [] },
-            { merge: true }
-          );
-          setChallenges(defaultChallenges);
+          // If no challenges exist, generate one using OpenAI
+          const aiChallenge = await generateChallenge();
+          if (aiChallenge) {
+            await setDoc(
+              userDocRef,
+              { challenges: [aiChallenge], archivedChallenges: [] },
+              { merge: true }
+            );
+            setChallenges([aiChallenge]);
+          }
         }
       } else {
-        await setDoc(userDocRef, { challenges: defaultChallenges, archivedChallenges: [], xp: 0 });
-        setChallenges(defaultChallenges);
+        // First-time user, generate AI challenge
+        const aiChallenge = await generateChallenge();
+        if (aiChallenge) {
+          await setDoc(userDocRef, { challenges: [aiChallenge], archivedChallenges: [], xp: 0 });
+          setChallenges([aiChallenge]);
+        }
       }
     };
 
     fetchChallenges();
   }, []);
+
+  const generateChallenge = async () => {
+    console.log('Generating challenge...');
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'Generate a unique daily health or fitness challenge. Max 100 tokens.',
+            },
+          ],
+          max_tokens: 50,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const challengeTitle = response.data.choices[0].message.content.trim();
+      return {
+        id: Date.now().toString(),
+        title: challengeTitle,
+        progress: 0,
+        total: 1,
+        reward: 100,
+        completed: false,
+      };
+    } catch (error) {
+      console.error('Error generating challenge:', error);
+      return null;
+    }
+  };
 
   const incrementProgress = async (challengeId) => {
     if (!auth.currentUser) return;
@@ -84,10 +133,10 @@ export default function ChallengesScreen() {
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
 
-      // Filter out the completed challenge
+      // Remove completed challenge from active list
       let updatedChallenges = userData.challenges.filter((ch) => ch.id !== challengeId);
 
-      // Move completed challenge to archived list
+      // Move completed challenge to archive
       let archivedChallenges = userData.archivedChallenges || [];
       let completedChallenge = userData.challenges.find((ch) => ch.id === challengeId);
       if (completedChallenge) {
@@ -141,10 +190,8 @@ export default function ChallengesScreen() {
         )}
       />
 
-      <Pressable
-        className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
-        onPress={() => console.log('View More Challenges')}>
-        <Text className="text-lg text-white">View More</Text>
+      <Pressable className="mt-6 rounded-lg bg-blue-500 px-6 py-3" onPress={generateChallenge}>
+        <Text className="text-lg text-white">Generate Challenge</Text>
       </Pressable>
     </View>
   );
