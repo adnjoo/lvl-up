@@ -9,8 +9,6 @@ import { getStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// console.log(process.env.EXPO_PUBLIC_FIREBASE_API_KEY);
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -31,7 +29,6 @@ const auth = initializeAuth(app, {
 const analytics = getAnalytics(app);
 
 // Firebase services
-// const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
