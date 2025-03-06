@@ -2,10 +2,11 @@
 
 LVLUP is a **Solo Leveling-inspired to-do app** that gamifies productivity. Complete tasks, gain XP, and level up your character as you progress!
 
+<img src='./assets/screen-20250307.jpg' width='200' >
+
 ## Features
 - 🎮 **Leveling System**: Earn XP and level up by completing tasks.
 - ✅ **Task Management**: Organize tasks as "Main Quests" and "Side Quests."
-- 📅 **Daily/Weekly Goals**: Set and track recurring objectives.
 
 ## Tech Stack
 LVLUP is built with the following technologies:
@@ -16,8 +17,8 @@ LVLUP is built with the following technologies:
 ## Installation & Setup
 1. **Clone the Repository**
    ```sh
-   git clone https://github.com/your-username/lvlup.git
-   cd lvlup
+   git clone https://github.com/adnjoo/lvl-up.git
+   cd lvl-up
    ```
 2. **Install Dependencies**
    ```sh
@@ -32,6 +33,3 @@ LVLUP is built with the following technologies:
    ```sh
    expo start
    ```
-
-## License
-This project is licensed under the MIT License.
