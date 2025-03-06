@@ -1,8 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Image, Alert } from 'react-native';
+
+import { auth } from '../firebase';
 
 export default function AuthScreen() {
   const router = useRouter();
@@ -10,26 +13,36 @@ export default function AuthScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dummyUser = {
-    email: 'test@example.com',
-    password: 'password123',
-  };
-
   const handleAuth = async () => {
-    console.log(email, password);
-    if (email.toLowerCase() === dummyUser.email && password === dummyUser.password) {
-      await AsyncStorage.setItem('isAuthenticated', 'true');
-      Alert.alert('Success', 'You have logged in successfully!', [
-        { text: 'OK', onPress: () => router.replace('/(tabs)') },
-      ]);
-    } else {
-      Alert.alert('Error', 'Invalid email or password. Try again.');
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
+    try {
+      if (isRegister) {
+        // Register a new user
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await AsyncStorage.setItem('isAuthenticated', 'true');
+        Alert.alert('Success', 'Account created successfully!', [
+          { text: 'OK', onPress: () => router.replace('/(tabs)') },
+        ]);
+      } else {
+        // Login existing user
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await AsyncStorage.setItem('isAuthenticated', 'true');
+        Alert.alert('Success', 'Logged in successfully!', [
+          { text: 'OK', onPress: () => router.replace('/(tabs)') },
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message);
     }
   };
 
-  const handleDummyLogin = async () => {
+  const handleGuestLogin = async () => {
     await AsyncStorage.setItem('isAuthenticated', 'true');
-    Alert.alert('Success', 'Logged in with Dummy Account!', [
+    Alert.alert('Success', 'Logged in as Guest!', [
       { text: 'OK', onPress: () => router.replace('/(tabs)') },
     ]);
   };
@@ -70,11 +83,6 @@ export default function AuthScreen() {
             value={password}
             onChangeText={setPassword}
           />
-
-          {/* Hint */}
-          <Text className="mb-3 text-sm text-gray-400">
-            Hint: try test@example.com, password123
-          </Text>
         </View>
 
         {/* Submit Button */}
@@ -86,10 +94,10 @@ export default function AuthScreen() {
           </Text>
         </Pressable>
 
-        {/* Dummy Login Button */}
+        {/* Guest Login Button */}
         <Pressable
           className="mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-green-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
-          onPress={handleDummyLogin}>
+          onPress={handleGuestLogin}>
           <Text className="text-lg font-semibold text-green-400">Login as Guest</Text>
         </Pressable>
 
