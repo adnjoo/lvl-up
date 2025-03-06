@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "lvl-up",
+    "slug": "lvl-up",
     "version": "1.0.0",
 
     "web": {
@@ -12,7 +12,7 @@
       "tsconfigPaths": true
     },
 
-    "plugins": [],
+    "plugins": ["expo-router"],
 
     "orientation": "portrait",
     "icon": "./assets/icon.png",
