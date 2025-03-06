@@ -1,8 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View, Text, Pressable, Switch } from 'react-native';
+import { View, Text, Pressable, Switch, Alert } from 'react-native';
 
 export default function SettingsScreen() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('isAuthenticated');
+    Alert.alert('Logged Out', 'You have been logged out.', [
+      { text: 'OK', onPress: () => router.replace('/auth') },
+    ]);
+  };
 
   return (
     <View className="flex-1 items-center justify-center bg-gray-900 p-6">
@@ -17,9 +27,7 @@ export default function SettingsScreen() {
         />
       </View>
 
-      <Pressable
-        className="mt-6 rounded-lg bg-red-500 px-6 py-3"
-        onPress={() => console.log('Logout')}>
+      <Pressable className="mt-6 rounded-lg bg-red-500 px-6 py-3" onPress={handleLogout}>
         <Text className="text-lg text-white">Logout</Text>
       </Pressable>
     </View>
