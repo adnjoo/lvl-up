@@ -27,6 +27,13 @@ export default function AuthScreen() {
     }
   };
 
+  const handleDummyLogin = async () => {
+    await AsyncStorage.setItem('isAuthenticated', 'true');
+    Alert.alert('Success', 'Logged in with Dummy Account!', [
+      { text: 'OK', onPress: () => router.replace('/(tabs)') },
+    ]);
+  };
+
   return (
     <LinearGradient colors={['#000000', '#0A0A1A']} style={{ flex: 1 }}>
       <View className="flex-1 items-center justify-center p-6">
@@ -77,6 +84,13 @@ export default function AuthScreen() {
           <Text className="text-lg font-semibold text-blue-400">
             {isRegister ? 'Sign Up' : 'Login'}
           </Text>
+        </Pressable>
+
+        {/* Dummy Login Button */}
+        <Pressable
+          className="mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-green-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
+          onPress={handleDummyLogin}>
+          <Text className="text-lg font-semibold text-green-400">Login as Guest</Text>
         </Pressable>
 
         {/* Toggle Login/Register */}
