@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Image, Alert } from 'react-native';
 
@@ -13,6 +14,8 @@ export default function AuthScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const db = getFirestore(); // Initialize Firestore
+
   const handleAuth = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please enter both email and password.');
@@ -20,21 +23,31 @@ export default function AuthScreen() {
     }
 
     try {
+      let userCredential;
+
       if (isRegister) {
-        // Register a new user
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await AsyncStorage.setItem('isAuthenticated', 'true');
-        Alert.alert('Success', 'Account created successfully!', [
-          { text: 'OK', onPress: () => router.replace('/(tabs)') },
-        ]);
+        // 🔥 Register user with Firebase Auth
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // 🔥 Save user data in Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          name: email.split('@')[0], // Default name (use first part of email)
+          email: user.email,
+          level: 1, // Default level
+          createdAt: new Date(),
+        });
+
+        Alert.alert('Success', 'Account created successfully!');
       } else {
-        // Login existing user
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        await AsyncStorage.setItem('isAuthenticated', 'true');
-        Alert.alert('Success', 'Logged in successfully!', [
-          { text: 'OK', onPress: () => router.replace('/(tabs)') },
-        ]);
+        // 🔥 Login existing user
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+        Alert.alert('Success', 'Logged in successfully!');
       }
+
+      // ✅ Save authentication state locally
+      await AsyncStorage.setItem('isAuthenticated', 'true');
+      router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Error', error.message);
     }
