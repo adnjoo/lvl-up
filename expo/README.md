@@ -2,8 +2,6 @@
 
 LVLUP is a **Solo Leveling-inspired to-do app** that gamifies productivity. Complete tasks, gain XP, and level up your character as you progress!
 
-<img src='./assets/screen-20250307.jpg' width='200' >
-
 ## Features
 - 🎮 **Leveling System**: Earn XP and level up by completing tasks.
 - ✅ **Task Management**: Organize tasks as "Main Quests" and "Side Quests."
