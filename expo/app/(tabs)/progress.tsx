@@ -1,12 +1,13 @@
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, ProgressBarAndroid } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default function ProgressScreen() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
-  const [xpNeeded, setXpNeeded] = useState(1000); // Base XP needed for level 1
+  const [xpNeeded, setXpNeeded] = useState(1000);
   const auth = getAuth();
   const db = getFirestore();
 
@@ -23,18 +24,16 @@ export default function ProgressScreen() {
         let currentLevel = userData.level || 1;
         let requiredXp = userData.xpNeeded || calculateXpNeeded(currentLevel);
 
-        // Ensure leveling up if XP exceeds required XP
         while (currentXp >= requiredXp) {
-          currentXp -= requiredXp; // Carry over excess XP
+          currentXp -= requiredXp;
           currentLevel += 1;
-          requiredXp = calculateXpNeeded(currentLevel); // Update XP needed for next level
+          requiredXp = calculateXpNeeded(currentLevel);
         }
 
         setXp(currentXp);
         setLevel(currentLevel);
         setXpNeeded(requiredXp);
 
-        // Update Firebase if level changed
         await updateDoc(userDocRef, {
           xp: currentXp,
           level: currentLevel,
@@ -46,9 +45,8 @@ export default function ProgressScreen() {
     fetchUserData();
   }, []);
 
-  // Function to calculate XP needed for the next level (can be adjusted)
   const calculateXpNeeded = (level) => {
-    return 1000 + level * 200; // Example formula: Base XP increases by 200 per level
+    return 1000 + level * 200;
   };
 
   return (
@@ -56,12 +54,16 @@ export default function ProgressScreen() {
       <Text className="mb-4 text-2xl font-bold text-white">Progress!</Text>
 
       <Text className="mb-2 text-white">Level: {level}</Text>
-      <ProgressBarAndroid
-        styleAttr="Horizontal"
-        indeterminate={false}
-        progress={xp / xpNeeded}
-        color="#4CAF50"
-      />
+
+      <AnimatedCircularProgress
+        size={120}
+        width={10}
+        fill={(xp / xpNeeded) * 100}
+        tintColor="#4CAF50"
+        backgroundColor="#333"
+        duration={1000}>
+        {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
+      </AnimatedCircularProgress>
 
       <Text className="mt-4 text-white">
         XP: {xp} / {xpNeeded}
