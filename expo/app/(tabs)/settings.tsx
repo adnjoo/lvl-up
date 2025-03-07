@@ -63,15 +63,6 @@ export default function SettingsScreen() {
         <Text className="text-lg text-red-400">No user data found.</Text>
       )}
 
-      <View className="w-full max-w-sm flex-row items-center justify-between rounded-lg bg-gray-800 p-4 mt-4">
-        <Text className="text-lg text-white">Dark Mode</Text>
-        <Switch
-          value={isDarkMode}
-          onValueChange={(value) => setIsDarkMode(value)}
-          thumbColor={isDarkMode ? '#4CAF50' : '#f4f3f4'}
-        />
-      </View>
-
       <Pressable className="mt-6 rounded-lg bg-red-500 px-6 py-3" onPress={handleLogout}>
         <Text className="text-lg text-white">Logout</Text>
       </Pressable>
