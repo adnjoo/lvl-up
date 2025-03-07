@@ -3,13 +3,12 @@ import { useRouter } from 'expo-router';
 import { getAuth, signOut } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, Switch, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, Alert, ActivityIndicator } from 'react-native';
 
 import { app } from '../../firebase'; // Ensure you have firebaseConfig.js
 
 export default function SettingsScreen() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -48,19 +47,23 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900 p-6">
-      <Text className="mb-4 text-2xl font-bold text-white">Settings</Text>
+    <View className="flex-1 bg-gray-900 p-6">
+      <View className="mt-10 items-center">
+        <Text className="text-2xl font-bold text-white">Settings</Text>
+      </View>
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#ffffff" />
-      ) : user ? (
-        <View className="w-full max-w-sm rounded-lg bg-gray-800 p-4">
-          <Text className="text-lg text-white">Name: {user.name}</Text>
-          <Text className="text-lg text-white">Email: {user.email}</Text>
-        </View>
-      ) : (
-        <Text className="text-lg text-red-400">No user data found.</Text>
-      )}
+      <View className="flex-1 items-center justify-center">
+        {loading ? (
+          <ActivityIndicator size="large" color="#ffffff" />
+        ) : user ? (
+          <View className="w-full max-w-sm rounded-lg bg-gray-800 p-4">
+            <Text className="text-lg text-white">Name: {user.name}</Text>
+            <Text className="text-lg text-white">Email: {user.email}</Text>
+          </View>
+        ) : (
+          <Text className="text-lg text-red-400">No user data found.</Text>
+        )}
+      </View>
 
       <Pressable className="mt-6 rounded-lg bg-red-500 px-6 py-3" onPress={handleLogout}>
         <Text className="text-lg text-white">Logout</Text>

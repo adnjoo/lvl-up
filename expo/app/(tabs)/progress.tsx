@@ -48,45 +48,47 @@ export default function ProgressScreen() {
     fetchUserData();
   }, []);
 
-  const calculateXpNeeded = (level) => {
+  const calculateXpNeeded = (level: number) => {
     return 1000 + level * 200;
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900 p-6">
-      <Text className="mb-4 text-2xl font-bold text-white">Progress!</Text>
+    <View className="flex-1 bg-gray-900 p-6">
+      {/* Title stays at the top */}
+      <View className="mt-10 items-center">
+        <Text className="text-2xl font-bold text-white">Progress!</Text>
+      </View>
 
-      {loading ? (
-        // Skeleton Loading UI
-        <View className="items-center">
-          <ActivityIndicator size="large" color="#4CAF50" />
-          <Text className="mt-2 text-white">Loading progress...</Text>
-        </View>
-      ) : (
-        <>
-          <Text className="mb-2 text-white">Level: {level}</Text>
+      <View className="flex-1 items-center justify-center">
+        {loading ? (
+          <View className="items-center">
+            <ActivityIndicator size="large" color="#4CAF50" />
+            <Text className="mt-2 text-white">Loading progress...</Text>
+          </View>
+        ) : (
+          <>
+            <Text className="mb-2 text-white">Level: {level}</Text>
+            <AnimatedCircularProgress
+              size={120}
+              width={10}
+              fill={(xp / xpNeeded) * 100}
+              tintColor="#4CAF50"
+              backgroundColor="#333"
+              duration={1000}>
+              {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
+            </AnimatedCircularProgress>
+            <Text className="mt-4 text-white">
+              XP: {xp} / {xpNeeded}
+            </Text>
 
-          <AnimatedCircularProgress
-            size={120}
-            width={10}
-            fill={(xp / xpNeeded) * 100}
-            tintColor="#4CAF50"
-            backgroundColor="#333"
-            duration={1000}>
-            {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
-          </AnimatedCircularProgress>
-
-          <Text className="mt-4 text-white">
-            XP: {xp} / {xpNeeded}
-          </Text>
-
-          <Pressable
-            className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
-            onPress={() => console.log('View Achievements')}>
-            <Text className="text-lg text-white">View Achievements</Text>
-          </Pressable>
-        </>
-      )}
+            <Pressable
+              className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
+              onPress={() => console.log('View Achievements')}>
+              <Text className="text-lg text-white">View Achievements</Text>
+            </Pressable>
+          </>
+        )}
+      </View>
     </View>
   );
 }
