@@ -1,13 +1,14 @@
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, ActivityIndicator } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default function ProgressScreen() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [xpNeeded, setXpNeeded] = useState(1000);
+  const [loading, setLoading] = useState(true); // New loading state
   const auth = getAuth();
   const db = getFirestore();
 
@@ -40,6 +41,8 @@ export default function ProgressScreen() {
           xpNeeded: requiredXp,
         });
       }
+
+      setLoading(false); // Data is loaded, hide the skeleton
     };
 
     fetchUserData();
@@ -53,27 +56,37 @@ export default function ProgressScreen() {
     <View className="flex-1 items-center justify-center bg-gray-900 p-6">
       <Text className="mb-4 text-2xl font-bold text-white">Progress!</Text>
 
-      <Text className="mb-2 text-white">Level: {level}</Text>
+      {loading ? (
+        // Skeleton Loading UI
+        <View className="items-center">
+          <ActivityIndicator size="large" color="#4CAF50" />
+          <Text className="mt-2 text-white">Loading progress...</Text>
+        </View>
+      ) : (
+        <>
+          <Text className="mb-2 text-white">Level: {level}</Text>
 
-      <AnimatedCircularProgress
-        size={120}
-        width={10}
-        fill={(xp / xpNeeded) * 100}
-        tintColor="#4CAF50"
-        backgroundColor="#333"
-        duration={1000}>
-        {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
-      </AnimatedCircularProgress>
+          <AnimatedCircularProgress
+            size={120}
+            width={10}
+            fill={(xp / xpNeeded) * 100}
+            tintColor="#4CAF50"
+            backgroundColor="#333"
+            duration={1000}>
+            {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
+          </AnimatedCircularProgress>
 
-      <Text className="mt-4 text-white">
-        XP: {xp} / {xpNeeded}
-      </Text>
+          <Text className="mt-4 text-white">
+            XP: {xp} / {xpNeeded}
+          </Text>
 
-      <Pressable
-        className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
-        onPress={() => console.log('View Achievements')}>
-        <Text className="text-lg text-white">View Achievements</Text>
-      </Pressable>
+          <Pressable
+            className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
+            onPress={() => console.log('View Achievements')}>
+            <Text className="text-lg text-white">View Achievements</Text>
+          </Pressable>
+        </>
+      )}
     </View>
   );
 }
