@@ -3,6 +3,8 @@
     "name": "lvl-up",
     "slug": "lvl-up",
     "version": "1.0.0",
+    "scheme": "com.bbs.lvlup",
+    "newArchEnabled": true,
 
     "web": {
       "favicon": "./assets/favicon.png"
