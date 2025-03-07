@@ -26,31 +26,31 @@ export default function HomeScreen() {
 
         {/* Button Container */}
         <View className="w-full max-w-xs gap-4">
-          {/* Progress Button */}
           <Pressable
             className="w-full items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
             onPress={() => router.push('/progress')}>
-            <Text className="text-lg font-semibold text-blue-400">
-              <Ionicons name="bar-chart" size={20} color="#4CAF50" /> View Progress
-            </Text>
+            <View className="flex-row items-center">
+              <Ionicons name="bar-chart" size={20} color="#4CAF50" className="mr-2" />
+              <Text className="text-lg font-semibold text-blue-400">View Progress</Text>
+            </View>
           </Pressable>
 
-          {/* Challenges Button */}
           <Pressable
             className="w-full items-center justify-center rounded-lg border border-purple-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
             onPress={() => router.push('/challenges')}>
-            <Text className="text-lg font-semibold text-purple-400">
-              <Ionicons name="trophy" size={20} color="#D8BFD8" /> Challenges
-            </Text>
+            <View className="flex-row items-center">
+              <Ionicons name="trophy" size={20} color="#D8BFD8" className="mr-2" />
+              <Text className="text-lg font-semibold text-purple-400">Challenges</Text>
+            </View>
           </Pressable>
 
-          {/* Settings Button */}
           <Pressable
             className="w-full items-center justify-center rounded-lg border border-yellow-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
             onPress={() => router.push('/settings')}>
-            <Text className="text-lg font-semibold text-yellow-400">
-              <Ionicons name="settings" size={20} color="#FFD700" /> Settings
-            </Text>
+            <View className="flex-row items-center">
+              <Ionicons name="settings" size={20} color="#FFD700" className="mr-2" />
+              <Text className="text-lg font-semibold text-yellow-400">Settings</Text>
+            </View>
           </Pressable>
         </View>
       </View>
