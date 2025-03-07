@@ -42,7 +42,7 @@ export default function IndexScreen() {
       } else {
         // 🔥 Login existing user
         userCredential = await signInWithEmailAndPassword(auth, email, password);
-        Alert.alert('Success', 'Logged in successfully!');
+        // Alert.alert('Success', 'Logged in successfully!');
       }
 
       // ✅ Save authentication state locally
