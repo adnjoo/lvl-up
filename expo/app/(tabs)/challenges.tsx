@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, FlatList, ActivityIndicator, TextInput } from 'react-native';
 
 import ChallengeItem from '~/components/ChallengeItem';
 
@@ -11,6 +11,7 @@ const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 export default function ChallengesScreen() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userInput, setUserInput] = useState('');
   const auth = getAuth();
   const db = getFirestore();
 
@@ -35,7 +36,8 @@ export default function ChallengesScreen() {
 
   const generateChallenge = async () => {
     setLoading(true);
-    console.log('Generating challenge...');
+    console.log('Generating challenge with user input:', userInput);
+
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
@@ -44,7 +46,12 @@ export default function ChallengesScreen() {
           messages: [
             {
               role: 'system',
-              content: 'Generate a easy, unique daily health or fitness challenge. Max 30 tokens',
+              content:
+                "Transform the user's idea into a unique, fun, and achievable challenge. If the user provides no input, generate a default daily challenge. Max 30 tokens",
+            },
+            {
+              role: 'user',
+              content: userInput || 'Generate a fun and achievable daily challenge.',
             },
           ],
           max_tokens: 50,
@@ -78,6 +85,8 @@ export default function ChallengesScreen() {
         await updateDoc(userDocRef, { challenges: updatedChallenges });
         setChallenges(updatedChallenges);
       }
+
+      setUserInput(''); // Clear input after submission
     } catch (error) {
       console.error('Error generating challenge:', error);
     } finally {
@@ -153,6 +162,18 @@ export default function ChallengesScreen() {
         <Text className="text-2xl font-bold text-white">Challenges</Text>
       </View>
 
+      <TextInput
+        className="mt-4 rounded-lg bg-gray-800 p-3 text-white"
+        placeholder="Enter a challenge idea or leave blank for AI"
+        placeholderTextColor="#888"
+        value={userInput}
+        onChangeText={setUserInput}
+      />
+
+      <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateChallenge}>
+        <Text className="text-lg text-white">{loading ? 'Generating...' : 'Create Challenge'}</Text>
+      </Pressable>
+
       <View className="flex-1 items-center justify-center">
         {loading ? (
           <ActivityIndicator size="large" color="#4CAF50" />
@@ -171,10 +192,6 @@ export default function ChallengesScreen() {
           />
         )}
       </View>
-
-      <Pressable className="mt-6 rounded-lg bg-blue-500 px-6 py-3" onPress={generateChallenge}>
-        <Text className="text-lg text-white">Generate Challenge</Text>
-      </Pressable>
     </View>
   );
 }
