@@ -40,9 +40,8 @@ export default function SettingsScreen() {
     try {
       await signOut(auth);
       await AsyncStorage.removeItem('isAuthenticated');
-      Alert.alert('Logged Out', 'You have been logged out.', [
-        { text: 'OK', onPress: () => router.replace('/auth') },
-      ]);
+      Alert.alert('Logged Out', 'You have been logged out.', [{ text: 'OK' }]);
+      router.push('auth');
     } catch (error) {
       console.error('Logout Error:', error);
     }
