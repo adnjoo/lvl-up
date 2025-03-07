@@ -17,7 +17,7 @@ export default function Layout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      {!user ? <Stack.Screen name="auth" /> : <Stack.Screen name="(tabs)" />}
+      {!user ? <Stack.Screen name="(auth)/auth" /> : <Stack.Screen name="(tabs)" />}
     </Stack>
   );
 }

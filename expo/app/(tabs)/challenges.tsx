@@ -4,21 +4,9 @@ import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, FlatList, ActivityIndicator } from 'react-native';
 
-const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
+import ChallengeItem from '~/components/ChallengeItem';
 
-const defaultChallenges = [
-  { id: '1', title: 'Complete a Workout', progress: 0, total: 1, reward: 100, completed: false },
-  { id: '2', title: 'Read for 30 Minutes', progress: 0, total: 1, reward: 100, completed: false },
-  {
-    id: '3',
-    title: 'Meditate for 10 Minutes',
-    progress: 0,
-    total: 1,
-    reward: 100,
-    completed: false,
-  },
-  { id: '4', title: 'Drink 2L of Water', progress: 0, total: 1, reward: 100, completed: false },
-];
+const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 
 export default function ChallengesScreen() {
   const [challenges, setChallenges] = useState([]);
@@ -54,7 +42,10 @@ export default function ChallengesScreen() {
         {
           model: 'gpt-4',
           messages: [
-            { role: 'system', content: 'Generate a unique daily health or fitness challenge.' },
+            {
+              role: 'system',
+              content: 'Generate a easy, unique daily health or fitness challenge. Max 30 tokens',
+            },
           ],
           max_tokens: 50,
         },
@@ -167,38 +158,12 @@ export default function ChallengesScreen() {
           data={challenges}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View className="mb-4 w-full rounded-lg bg-gray-800 p-4">
-              <Text className="text-lg font-semibold text-white">{item.title}</Text>
-              <View className="mt-2 h-2 w-full bg-gray-700">
-                <View
-                  style={{ width: `${(item.progress / item.total) * 100}%` }}
-                  className="h-full bg-green-500"
-                />
-              </View>
-              <Text className="mt-2 text-white">
-                {item.progress} / {item.total}
-              </Text>
-
-              {!item.completed ? (
-                <Pressable
-                  className="mt-2 rounded-lg bg-green-500 px-4 py-2"
-                  onPress={() => incrementProgress(item.id)}>
-                  <Text className="text-white">Mark as Done</Text>
-                </Pressable>
-              ) : (
-                <Pressable
-                  className="mt-2 rounded-lg bg-yellow-500 px-4 py-2"
-                  onPress={() => claimReward(item.id, item.reward)}>
-                  <Text className="text-white">Claim {item.reward} XP</Text>
-                </Pressable>
-              )}
-
-              <Pressable
-                className="mt-2 rounded-lg bg-red-500 px-4 py-2"
-                onPress={() => deleteChallenge(item.id)}>
-                <Text className="text-white">Delete</Text>
-              </Pressable>
-            </View>
+            <ChallengeItem
+              challenge={item}
+              onIncrement={incrementProgress}
+              onClaim={claimReward}
+              onDelete={deleteChallenge}
+            />
           )}
         />
       )}
