@@ -148,25 +148,29 @@ export default function ChallengesScreen() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900 p-6">
-      <Text className="mb-4 text-2xl font-bold text-white">Challenges</Text>
+    <View className="flex-1 bg-gray-900 p-6">
+      <View className="mt-10 items-center">
+        <Text className="text-2xl font-bold text-white">Challenges</Text>
+      </View>
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#4CAF50" />
-      ) : (
-        <FlatList
-          data={challenges}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ChallengeItem
-              challenge={item}
-              onIncrement={incrementProgress}
-              onClaim={claimReward}
-              onDelete={deleteChallenge}
-            />
-          )}
-        />
-      )}
+      <View className="flex-1 items-center justify-center">
+        {loading ? (
+          <ActivityIndicator size="large" color="#4CAF50" />
+        ) : (
+          <FlatList
+            data={challenges}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <ChallengeItem
+                challenge={item}
+                onIncrement={incrementProgress}
+                onClaim={claimReward}
+                onDelete={deleteChallenge}
+              />
+            )}
+          />
+        )}
+      </View>
 
       <Pressable className="mt-6 rounded-lg bg-blue-500 px-6 py-3" onPress={generateChallenge}>
         <Text className="text-lg text-white">Generate Challenge</Text>
