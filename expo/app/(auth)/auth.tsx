@@ -8,17 +8,25 @@ import { View, Text, TextInput, Pressable, Image, Alert } from 'react-native';
 
 import { auth } from '../../firebase';
 
+const ALPHA_CODE = 'test123'; // 🔥 Change this for private access
+
 export default function IndexScreen() {
   const router = useRouter();
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [alphaCode, setAlphaCode] = useState(''); // ✅ Added Alpha Code field
 
   const db = getFirestore(); // Initialize Firestore
 
   const handleAuth = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
+    if (isRegister && alphaCode.trim() !== ALPHA_CODE) {
+      Alert.alert('Error', 'Invalid alpha code. Registration is restricted.');
       return;
     }
 
@@ -42,7 +50,6 @@ export default function IndexScreen() {
       } else {
         // 🔥 Login existing user
         userCredential = await signInWithEmailAndPassword(auth, email, password);
-        // Alert.alert('Success', 'Logged in successfully!');
       }
 
       // ✅ Save authentication state locally
@@ -92,6 +99,17 @@ export default function IndexScreen() {
             value={password}
             onChangeText={setPassword}
           />
+
+          {/* Alpha Code Input (only for registration) */}
+          {isRegister && (
+            <TextInput
+              className="mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
+              placeholder="Alpha Code"
+              placeholderTextColor="#aaa"
+              value={alphaCode}
+              onChangeText={setAlphaCode}
+            />
+          )}
         </View>
 
         {/* Submit Button */}
