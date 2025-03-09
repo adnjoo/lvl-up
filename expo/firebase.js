@@ -18,14 +18,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Check if running on web
-const isBrowser = typeof window !== 'undefined';
-
 // Use appropriate persistence method
 const auth = initializeAuth(app, {
-  persistence: isBrowser
-    ? browserLocalPersistence // Web-friendly persistence
-    : getReactNativePersistence(ReactNativeAsyncStorage), // Mobile persistence
+  persistence:
+    process.env.EXPO_PUBLIC_FIREBASE_PERSISTENCE === 'browser'
+      ? browserLocalPersistence // Web-friendly persistence
+      : getReactNativePersistence(ReactNativeAsyncStorage), // Mobile persistence
 });
 
 // Firebase services
