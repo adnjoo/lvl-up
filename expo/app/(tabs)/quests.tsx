@@ -4,19 +4,19 @@ import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, FlatList, ActivityIndicator, TextInput } from 'react-native';
 
-import ChallengeItem from '~/components/ChallengeItem';
+import QuestItem from '~/components/QuestItem';
 
 const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 
-export default function ChallengesScreen() {
-  const [challenges, setChallenges] = useState([]);
+export default function QuestsScreen() {
+  const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = useState('');
   const auth = getAuth();
   const db = getFirestore();
 
   useEffect(() => {
-    const fetchChallenges = async () => {
+    const fetchQuests = async () => {
       if (!auth.currentUser) return;
 
       const userDocRef = doc(db, 'users', auth.currentUser.uid);
@@ -24,19 +24,18 @@ export default function ChallengesScreen() {
 
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
-        setChallenges(userData.challenges || []);
+        setQuests(userData.quests || []);
       } else {
-        await setDoc(userDocRef, { challenges: [], archivedChallenges: [], xp: 0 });
-        setChallenges([]);
+        await setDoc(userDocRef, { quests: [], archivedQuests: [], xp: 0 });
+        setQuests([]);
       }
     };
 
-    fetchChallenges();
+    fetchQuests();
   }, []);
 
-  const generateChallenge = async () => {
+  const generateQuest = async () => {
     setLoading(true);
-    console.log('Generating challenge with user input:', userInput);
 
     try {
       const response = await axios.post(
@@ -47,11 +46,11 @@ export default function ChallengesScreen() {
             {
               role: 'system',
               content:
-                "Transform the user's idea into a unique, fun, and achievable challenge. If the user provides no input, generate a default daily challenge. Max 30 tokens",
+                "Transform the user's idea into a unique, fun, and achievable quest. If the user provides no input, generate a default daily quest. Max 30 tokens",
             },
             {
               role: 'user',
-              content: userInput || 'Generate a fun and achievable daily challenge.',
+              content: userInput || 'Generate a fun and achievable daily quest.',
             },
           ],
           max_tokens: 50,
@@ -64,10 +63,10 @@ export default function ChallengesScreen() {
         }
       );
 
-      const challengeTitle = response.data.choices[0].message.content.trim();
-      const newChallenge = {
+      const questTitle = response.data.choices[0].message.content.trim();
+      const newQuest = {
         id: Date.now().toString(),
-        title: challengeTitle,
+        title: questTitle,
         progress: 0,
         total: 1,
         reward: 100,
@@ -80,21 +79,21 @@ export default function ChallengesScreen() {
 
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
-        const updatedChallenges = [...(userData.challenges || []), newChallenge];
+        const updatedQuests = [...(userData.quests || []), newQuest];
 
-        await updateDoc(userDocRef, { challenges: updatedChallenges });
-        setChallenges(updatedChallenges);
+        await updateDoc(userDocRef, { quests: updatedQuests });
+        setQuests(updatedQuests);
       }
 
-      setUserInput(''); // Clear input after submission
+      setUserInput('');
     } catch (error) {
-      console.error('Error generating challenge:', error);
+      console.error('Error generating quest:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteChallenge = async (challengeId) => {
+  const deleteQuest = async (questId) => {
     if (!auth.currentUser) return;
 
     const userDocRef = doc(db, 'users', auth.currentUser.uid);
@@ -102,14 +101,14 @@ export default function ChallengesScreen() {
 
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
-      let updatedChallenges = userData.challenges.filter((ch) => ch.id !== challengeId);
+      let updatedQuests = userData.quests.filter((q) => q.id !== questId);
 
-      await updateDoc(userDocRef, { challenges: updatedChallenges });
-      setChallenges(updatedChallenges);
+      await updateDoc(userDocRef, { quests: updatedQuests });
+      setQuests(updatedQuests);
     }
   };
 
-  const incrementProgress = async (challengeId) => {
+  const incrementProgress = async (questId) => {
     if (!auth.currentUser) return;
 
     const userDocRef = doc(db, 'users', auth.currentUser.uid);
@@ -117,20 +116,20 @@ export default function ChallengesScreen() {
 
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
-      let updatedChallenges = userData.challenges.map((ch) => {
-        if (ch.id === challengeId && !ch.completed) {
-          const newProgress = ch.progress + 1;
-          return { ...ch, progress: newProgress, completed: newProgress >= ch.total };
+      let updatedQuests = userData.quests.map((q) => {
+        if (q.id === questId && !q.completed) {
+          const newProgress = q.progress + 1;
+          return { ...q, progress: newProgress, completed: newProgress >= q.total };
         }
-        return ch;
+        return q;
       });
 
-      await updateDoc(userDocRef, { challenges: updatedChallenges });
-      setChallenges(updatedChallenges);
+      await updateDoc(userDocRef, { quests: updatedQuests });
+      setQuests(updatedQuests);
     }
   };
 
-  const claimReward = async (challengeId, reward) => {
+  const claimReward = async (questId, reward) => {
     if (!auth.currentUser) return;
 
     const userDocRef = doc(db, 'users', auth.currentUser.uid);
@@ -139,39 +138,39 @@ export default function ChallengesScreen() {
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
 
-      let updatedChallenges = userData.challenges.filter((ch) => ch.id !== challengeId);
-      let archivedChallenges = userData.archivedChallenges || [];
-      let completedChallenge = userData.challenges.find((ch) => ch.id === challengeId);
-      if (completedChallenge) {
-        archivedChallenges.push(completedChallenge);
+      let updatedQuests = userData.quests.filter((q) => q.id !== questId);
+      let archivedQuests = userData.archivedQuests || [];
+      let completedQuest = userData.quests.find((q) => q.id === questId);
+      if (completedQuest) {
+        archivedQuests.push(completedQuest);
       }
 
       await updateDoc(userDocRef, {
         xp: (userData.xp || 0) + reward,
-        challenges: updatedChallenges,
-        archivedChallenges: archivedChallenges,
+        quests: updatedQuests,
+        archivedQuests: archivedQuests,
       });
 
-      setChallenges(updatedChallenges);
+      setQuests(updatedQuests);
     }
   };
 
   return (
     <View className="flex-1 bg-gray-900 p-6">
       <View className="mt-10 items-center">
-        <Text className="text-2xl font-bold text-white">Challenges</Text>
+        <Text className="text-2xl font-bold text-white">Quests</Text>
       </View>
 
       <TextInput
         className="mt-4 rounded-lg bg-gray-800 p-3 text-white"
-        placeholder="Enter a challenge idea or leave blank for AI"
+        placeholder="Enter a quest idea or leave blank for AI"
         placeholderTextColor="#888"
         value={userInput}
         onChangeText={setUserInput}
       />
 
-      <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateChallenge}>
-        <Text className="text-lg text-white">{loading ? 'Generating...' : 'Create Challenge'}</Text>
+      <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateQuest}>
+        <Text className="text-lg text-white">{loading ? 'Generating...' : 'Create Quest'}</Text>
       </Pressable>
 
       <View className="flex-1 items-center justify-center">
@@ -179,14 +178,14 @@ export default function ChallengesScreen() {
           <ActivityIndicator size="large" color="#4CAF50" />
         ) : (
           <FlatList
-            data={challenges}
+            data={quests}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ChallengeItem
-                challenge={item}
+              <QuestItem
+                quest={item}
                 onIncrement={incrementProgress}
                 onClaim={claimReward}
-                onDelete={deleteChallenge}
+                onDelete={deleteQuest}
               />
             )}
           />
