@@ -11,6 +11,7 @@ const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 export default function QuestsScreen() {
   const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingQuests, setLoadingQuests] = useState(true); // New loading state for quests
   const [userInput, setUserInput] = useState('');
   const auth = getAuth();
   const db = getFirestore();
@@ -18,6 +19,8 @@ export default function QuestsScreen() {
   useEffect(() => {
     const fetchQuests = async () => {
       if (!auth.currentUser) return;
+
+      setLoadingQuests(true); // Start loading when fetching quests
 
       const userDocRef = doc(db, 'users', auth.currentUser.uid);
       const userSnapshot = await getDoc(userDocRef);
@@ -29,6 +32,8 @@ export default function QuestsScreen() {
         await setDoc(userDocRef, { quests: [], archivedQuests: [], xp: 0 });
         setQuests([]);
       }
+
+      setLoadingQuests(false); // Stop loading once quests are fetched
     };
 
     fetchQuests();
@@ -174,7 +179,7 @@ export default function QuestsScreen() {
       </Pressable>
 
       <View className="mt-4 flex-1 items-center justify-center">
-        {loading ? (
+        {loadingQuests ? (
           <ActivityIndicator size="large" color="#4CAF50" />
         ) : (
           <FlatList
