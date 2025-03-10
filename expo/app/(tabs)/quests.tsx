@@ -173,7 +173,7 @@ export default function QuestsScreen() {
         <Text className="text-lg text-white">{loading ? 'Generating...' : 'Create Quest'}</Text>
       </Pressable>
 
-      <View className="flex-1 items-center justify-center">
+      <View className="mt-4 flex-1 items-center justify-center">
         {loading ? (
           <ActivityIndicator size="large" color="#4CAF50" />
         ) : (

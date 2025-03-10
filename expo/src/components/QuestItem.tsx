@@ -17,7 +17,7 @@ interface QuestItemProps {
 
 const QuestItem = ({ quest, onIncrement, onClaim, onDelete }: QuestItemProps) => {
   return (
-    <View className="mb-4 w-full rounded-lg bg-gray-800 p-4">
+    <View className="mb-4 w-full rounded-lg bg-gray-800 p-2">
       <Text className="text-lg font-semibold text-white">{quest.title}</Text>
       <View className="mt-2 h-2 w-full bg-gray-700">
         <View
