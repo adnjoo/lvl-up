@@ -21,9 +21,9 @@ const app = initializeApp(firebaseConfig);
 // Use appropriate persistence method
 const auth = initializeAuth(app, {
   persistence:
-    process.env.EXPO_PUBLIC_FIREBASE_PERSISTENCE === 'browser'
-      ? browserLocalPersistence // Web-friendly persistence
-      : getReactNativePersistence(ReactNativeAsyncStorage), // Mobile persistence
+    process.env.EXPO_PUBLIC_FIREBASE_PERSISTENCE === 'local'
+    ? getReactNativePersistence(ReactNativeAsyncStorage) // Mobile persistence
+    : browserLocalPersistence // Web-friendly persistence,
 });
 
 // Firebase services
