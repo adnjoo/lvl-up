@@ -2,10 +2,6 @@
 
 This directory contains the **Expo-based mobile app**.  
 
-## Features  
-- 🎮 **Leveling System** – Earn XP and level up by completing tasks.  
-- ✅ **Task Management** – Organize tasks as "Main Quests" and "Side Quests."  
-
 ## Tech Stack  
 - **Expo Router** – Navigation and routing.  
 - **Firebase** – Authentication, real-time database, and cloud functions.  
@@ -39,3 +35,20 @@ EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=..
 
 EXPO_PUBLIC_OPENAI_KEY=sk..
 ```  
+
+# Exporting to Web
+
+To export the app for web:
+
+Run the following command:
+
+```bash
+npx expo export -p web
+```
+
+Deploy the App
+Run the following command to deploy the app to your EAS project:
+
+```bash
+eas deploy --prod
+```
