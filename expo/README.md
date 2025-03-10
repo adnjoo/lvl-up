@@ -38,15 +38,18 @@ EXPO_PUBLIC_OPENAI_KEY=sk..
 
 # Exporting to Web
 
-To export the app for web:
-
-Run the following command:
+Run the following command to build the app for web:
 
 ```bash
 npx expo export -p web
 ```
 
-Deploy the App
+To serve build:
+
+```bash
+npx expo serve
+```
+
 Run the following command to deploy the app to your EAS project:
 
 ```bash
