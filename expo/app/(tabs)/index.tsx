@@ -41,10 +41,10 @@ export default function HomeScreen() {
 
         <Pressable
           className="w-full items-center justify-center rounded-lg border border-purple-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
-          onPress={() => router.push('/challenges')}>
+          onPress={() => router.push('/quests')}>
           <View className="flex-row items-center">
             <Ionicons name="trophy" size={20} color="#D8BFD8" className="mr-2" />
-            <Text className="text-lg font-semibold text-purple-400">Challenges</Text>
+            <Text className="text-lg font-semibold text-purple-400">Quests</Text>
           </View>
         </Pressable>
 

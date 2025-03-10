@@ -30,9 +30,9 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="challenges"
+          name="quests"
           options={{
-            title: 'Challenges',
+            title: 'Quests',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="trophy-outline" size={size} color={color} />
             ),
