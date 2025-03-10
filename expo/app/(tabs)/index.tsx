@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, Image } from 'react-native';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -57,6 +57,18 @@ export default function HomeScreen() {
           </View>
         </Pressable>
       </View>
+
+      {/* Cat GIF at the bottom-right */}
+      <Image
+        source={require('assets/cat.gif')}  // Adjust the path accordingly
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 20,
+          width: 50,
+          height: 50,
+        }}
+      />
     </View>
   );
 }
