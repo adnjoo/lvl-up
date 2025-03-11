@@ -1,3 +1,4 @@
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import useAuth from 'hooks/useAuth';
 import { View, ActivityIndicator } from 'react-native';
@@ -6,6 +7,14 @@ import '../global.css';
 
 export default function Layout() {
   const { user, loading } = useAuth();
+
+  const [fontsLoaded] = useFonts({
+    'SpaceGrotesk-Regular': require('../assets/fonts/SpaceGrotesk-Regular.ttf'),
+    'SpaceGrotesk-Medium': require('../assets/fonts/SpaceGrotesk-Medium.ttf'),
+    'SpaceGrotesk-Bold': require('../assets/fonts/SpaceGrotesk-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) return null;
 
   if (loading) {
     return (

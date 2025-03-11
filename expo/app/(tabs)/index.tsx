@@ -26,7 +26,9 @@ export default function HomeScreen() {
     <View className="flex-1 bg-gray-900 p-6">
       {/* Typing System Message */}
       <View className="mt-10 min-h-[64px] items-center">
-        <Text className="text-2xl font-bold text-green-400">{typedText}</Text>
+        <Text className="font-spacegrotesk-regular text-2xl font-bold text-green-400">
+          {typedText}
+        </Text>
       </View>
 
       <View className="flex-1 items-center justify-center gap-4">
@@ -60,7 +62,7 @@ export default function HomeScreen() {
 
       {/* Cat GIF at the bottom-right */}
       <Image
-        source={require('assets/cat.gif')}  // Adjust the path accordingly
+        source={require('assets/cat.gif')} // Adjust the path accordingly
         style={{
           position: 'absolute',
           bottom: 0,

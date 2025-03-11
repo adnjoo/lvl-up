@@ -56,7 +56,7 @@ export default function ProgressScreen() {
     <View className="flex-1 bg-gray-900 p-6">
       {/* Title stays at the top */}
       <View className="mt-10 items-center">
-        <Text className="text-2xl font-bold text-white">Progress!</Text>
+        <Text className="font-spacegrotesk-regular text-2xl font-bold text-white">PROGRESS</Text>
       </View>
 
       <View className="flex-1 items-center justify-center">

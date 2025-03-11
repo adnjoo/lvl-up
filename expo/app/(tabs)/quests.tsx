@@ -163,7 +163,7 @@ export default function QuestsScreen() {
   return (
     <View className="flex-1 bg-gray-900 p-6">
       <View className="mt-10 items-center">
-        <Text className="text-2xl font-bold text-white">Quests</Text>
+        <Text className="font-spacegrotesk-regular text-2xl font-bold text-white">QUESTS</Text>
       </View>
 
       <TextInput
