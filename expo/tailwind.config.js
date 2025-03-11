@@ -4,7 +4,13 @@ module.exports = {
 
   presets: [require('nativewind/preset')],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'spacegrotesk-regular': 'SpaceGrotesk-Regular',
+        'spacegrotesk-medium': 'SpaceGrotesk-Medium',
+        'spacegrotesk-bold': 'SpaceGrotesk-Bold',
+      },
+    },
   },
   plugins: [],
 };
