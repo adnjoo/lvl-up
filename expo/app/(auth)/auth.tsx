@@ -71,11 +71,13 @@ export default function IndexScreen() {
             className="shadow-red-glow"
             resizeMode="contain"
           />
-          <Text className="text-4xl font-extrabold text-green-400">LVL UP</Text>
+          <Text className="font-spacegrotesk-regular text-4xl font-extrabold text-green-400">
+            lvl up
+          </Text>
         </View>
 
         {/* Title */}
-        <Text className="shadow-blue-glow mb-6 text-3xl font-bold text-blue-400">
+        <Text className="font-spacegrotesk-regular shadow-blue-glow mb-6 text-3xl font-bold text-blue-400">
           {isRegister ? 'Register' : 'Login'}
         </Text>
 
@@ -83,7 +85,7 @@ export default function IndexScreen() {
         <View className="w-full max-w-xs">
           {/* Email Input */}
           <TextInput
-            className="mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 lowercase text-white placeholder-gray-400"
+            className="font-spacegrotesk-regular mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 lowercase text-white placeholder-gray-400"
             placeholder="Email"
             placeholderTextColor="#aaa"
             value={email}
@@ -92,7 +94,7 @@ export default function IndexScreen() {
 
           {/* Password Input */}
           <TextInput
-            className="mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
+            className="font-spacegrotesk-regular mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
@@ -103,7 +105,7 @@ export default function IndexScreen() {
           {/* Alpha Code Input (only for registration) */}
           {isRegister && (
             <TextInput
-              className="mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
+              className="font-spacegrotesk-regular mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
               placeholder="Alpha Code"
               placeholderTextColor="#aaa"
               value={alphaCode}
@@ -114,7 +116,7 @@ export default function IndexScreen() {
 
         {/* Submit Button */}
         <Pressable
-          className="mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
+          className="font-spacegrotesk-regular mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
           onPress={handleAuth}>
           <Text className="text-lg font-semibold text-blue-400">
             {isRegister ? 'Sign Up' : 'Login'}
@@ -123,7 +125,7 @@ export default function IndexScreen() {
 
         {/* Toggle Login/Register */}
         <Pressable onPress={() => setIsRegister(!isRegister)}>
-          <Text className="text-sm text-gray-400">
+          <Text className="font-spacegrotesk-regular text-sm text-gray-400">
             {isRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
           </Text>
         </Pressable>
