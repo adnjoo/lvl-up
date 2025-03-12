@@ -1,3 +1,31 @@
+/* global.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* === Typography styles === */
+
+.h1 {
+  @apply font-spacegrotesk-bold text-[24px] leading-[32px];
+}
+
+.h2 {
+  @apply font-spacegrotesk-medium text-[20px] leading-[28px];
+}
+
+.h3 {
+  @apply font-spacegrotesk-medium text-[16px] leading-[24px];
+}
+
+.body1 {
+  @apply font-manrope-regular text-[14px] leading-[20px];
+}
+
+.body2 {
+  @apply font-manrope-regular text-[13px] leading-[18px];
+}
+
+.caption {
+  @apply font-manrope-light text-[12px] leading-[16px];
+}
