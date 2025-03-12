@@ -19,7 +19,7 @@ const QuestItem = ({ quest, onIncrement, onClaim, onDelete }: QuestItemProps) =>
   return (
     <View className="mb-4 w-full rounded-lg bg-gray-800 p-4">
       {/* Title */}
-      <Text className="body1 font-semibold text-white">{quest.title}</Text>
+      <Text className="body1 text-white">{quest.title}</Text>
 
       {/* Progress bar */}
       <View className="mt-2 h-2 w-full bg-gray-700">

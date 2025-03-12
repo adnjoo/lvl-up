@@ -107,9 +107,7 @@ export default function IndexScreen() {
         <Pressable
           className="mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
           onPress={handleAuth}>
-          <Text className="body1 font-semibold text-blue-400">
-            {isRegister ? 'Sign Up' : 'Login'}
-          </Text>
+          <Text className="body1 text-blue-400">{isRegister ? 'Sign Up' : 'Login'}</Text>
         </Pressable>
 
         {/* Toggle Text */}
