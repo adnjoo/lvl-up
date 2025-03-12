@@ -11,7 +11,7 @@
 }
 
 .h2 {
-  @apply font-spacegrotesk-medium text-[20px] leading-[28px];
+  @apply font-spacegrotesk-medium font-semibold text-[20px] leading-[28px];
 }
 
 .h3 {

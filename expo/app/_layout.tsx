@@ -10,7 +10,6 @@ export default function Layout() {
   const { user, loading } = useAuth();
 
   const [fontsLoaded] = useFonts({
-    'SpaceGrotesk-Regular': require('../assets/fonts/SpaceGrotesk-Regular.ttf'),
     'SpaceGrotesk-Medium': require('../assets/fonts/SpaceGrotesk-Medium.ttf'),
     'SpaceGrotesk-Bold': require('../assets/fonts/SpaceGrotesk-Bold.ttf'),
     'Manrope-Regular': Manrope_400Regular,
