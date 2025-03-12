@@ -17,7 +17,7 @@ interface QuestItemProps {
 
 const QuestItem = ({ quest, onIncrement, onClaim, onDelete }: QuestItemProps) => {
   return (
-    <View className="mb-4 w-full rounded-lg bg-gray-800 p-4">
+    <View className="mb-4 w-full rounded-lg bg-gray-800 p-5">
       {/* Title */}
       <Text className="body1 text-white">{quest.title}</Text>
 
@@ -37,7 +37,7 @@ const QuestItem = ({ quest, onIncrement, onClaim, onDelete }: QuestItemProps) =>
       {/* Action buttons */}
       {!quest.completed ? (
         <Pressable
-          className="mt-2 rounded-lg bg-green-500 px-4 py-2 transition-all duration-200 hover:scale-105 active:scale-95"
+          className="mt-4 rounded-lg bg-green-500 px-4 py-2 transition-all duration-200 hover:scale-105 active:scale-95"
           onPress={() => onIncrement(quest.id)}>
           <Text className="body1 text-white">Mark as Done</Text>
         </Pressable>

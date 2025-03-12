@@ -18,7 +18,7 @@ export default function HomeScreen() {
       } else {
         clearInterval(interval);
       }
-    }, 50); // Adjust typing speed
+    }, 50);
     return () => clearInterval(interval);
   }, []);
 
@@ -26,18 +26,17 @@ export default function HomeScreen() {
     <View className="flex-1 bg-gray-900 p-6">
       {/* Typing System Message */}
       <View className="mt-10 min-h-[64px] items-center">
-        <Text className="font-spacegrotesk-regular text-2xl font-bold text-green-400">
-          {typedText}
-        </Text>
+        <Text className="h2 text-green-400">{typedText}</Text>
       </View>
 
+      {/* Main Nav Buttons */}
       <View className="flex-1 items-center justify-center gap-4">
         <Pressable
           className="w-full items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
           onPress={() => router.push('/progress')}>
           <View className="flex-row items-center">
             <Ionicons name="bar-chart" size={20} color="#4CAF50" className="mr-2" />
-            <Text className="text-lg font-semibold text-blue-400">View Progress</Text>
+            <Text className="body1 font-semibold text-blue-400">View Progress</Text>
           </View>
         </Pressable>
 
@@ -46,7 +45,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/quests')}>
           <View className="flex-row items-center">
             <Ionicons name="trophy" size={20} color="#D8BFD8" className="mr-2" />
-            <Text className="text-lg font-semibold text-purple-400">Quests</Text>
+            <Text className="body1 font-semibold text-purple-400">Quests</Text>
           </View>
         </Pressable>
 
@@ -55,14 +54,14 @@ export default function HomeScreen() {
           onPress={() => router.push('/settings')}>
           <View className="flex-row items-center">
             <Ionicons name="settings" size={20} color="#FFD700" className="mr-2" />
-            <Text className="text-lg font-semibold text-yellow-400">Settings</Text>
+            <Text className="body1 font-semibold text-yellow-400">Settings</Text>
           </View>
         </Pressable>
       </View>
 
       {/* Cat GIF at the bottom-right */}
       <Image
-        source={require('assets/cat.gif')} // Adjust the path accordingly
+        source={require('assets/cat.gif')}
         style={{
           position: 'absolute',
           bottom: 0,

@@ -8,7 +8,7 @@ export default function ProgressScreen() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [xpNeeded, setXpNeeded] = useState(1000);
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
   const auth = getAuth();
   const db = getFirestore();
 
@@ -42,7 +42,7 @@ export default function ProgressScreen() {
         });
       }
 
-      setLoading(false); // Data is loaded, hide the skeleton
+      setLoading(false);
     };
 
     fetchUserData();
@@ -54,20 +54,20 @@ export default function ProgressScreen() {
 
   return (
     <View className="flex-1 bg-gray-900 p-6">
-      {/* Title stays at the top */}
+      {/* Title */}
       <View className="mt-10 items-center">
-        <Text className="font-spacegrotesk-regular text-2xl font-bold text-white">PROGRESS</Text>
+        <Text className="h1 text-white">PROGRESS</Text>
       </View>
 
       <View className="flex-1 items-center justify-center">
         {loading ? (
           <View className="items-center">
             <ActivityIndicator size="large" color="#4CAF50" />
-            <Text className="mt-2 text-white">Loading progress...</Text>
+            <Text className="caption mt-2 text-white">Loading progress...</Text>
           </View>
         ) : (
           <>
-            <Text className="mb-2 text-white">Level: {level}</Text>
+            <Text className="body1 mb-2 text-white">Level: {level}</Text>
             <AnimatedCircularProgress
               size={120}
               width={10}
@@ -75,17 +75,17 @@ export default function ProgressScreen() {
               tintColor="#4CAF50"
               backgroundColor="#333"
               duration={1000}>
-              {(fill) => <Text className="font-bold text-white">{Math.round(fill)}%</Text>}
+              {(fill) => <Text className="body1 text-white">{Math.round(fill)}%</Text>}
             </AnimatedCircularProgress>
-            <Text className="mt-4 text-white">
+            <Text className="body1 mt-4 text-white">
               XP: {xp} / {xpNeeded}
             </Text>
 
-            <Pressable
+            {/* <Pressable
               className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
               onPress={() => console.log('View Achievements')}>
-              <Text className="text-lg text-white">View Achievements</Text>
-            </Pressable>
+              <Text className="body1 text-white">View Achievements</Text>
+            </Pressable> */}
           </>
         )}
       </View>

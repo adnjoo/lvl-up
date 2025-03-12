@@ -11,7 +11,7 @@ const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY;
 export default function QuestsScreen() {
   const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingQuests, setLoadingQuests] = useState(true); // New loading state for quests
+  const [loadingQuests, setLoadingQuests] = useState(true);
   const [userInput, setUserInput] = useState('');
   const auth = getAuth();
   const db = getFirestore();
@@ -20,7 +20,7 @@ export default function QuestsScreen() {
     const fetchQuests = async () => {
       if (!auth.currentUser) return;
 
-      setLoadingQuests(true); // Start loading when fetching quests
+      setLoadingQuests(true);
 
       const userDocRef = doc(db, 'users', auth.currentUser.uid);
       const userSnapshot = await getDoc(userDocRef);
@@ -33,7 +33,7 @@ export default function QuestsScreen() {
         setQuests([]);
       }
 
-      setLoadingQuests(false); // Stop loading once quests are fetched
+      setLoadingQuests(false);
     };
 
     fetchQuests();
@@ -163,11 +163,11 @@ export default function QuestsScreen() {
   return (
     <View className="flex-1 bg-gray-900 p-6">
       <View className="mt-10 items-center">
-        <Text className="font-spacegrotesk-regular text-2xl font-bold text-white">QUESTS</Text>
+        <Text className="h1 text-white">QUESTS</Text>
       </View>
 
       <TextInput
-        className="mt-4 rounded-lg bg-gray-800 p-3 font-manrope-regular text-white"
+        className="body1 mt-4 rounded-lg bg-gray-800 p-3 text-white"
         placeholder="Enter a quest idea or leave blank for AI"
         placeholderTextColor="#888"
         value={userInput}
@@ -175,9 +175,7 @@ export default function QuestsScreen() {
       />
 
       <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateQuest}>
-        <Text className="font-manrope-regular text-lg text-white">
-          {loading ? 'Generating...' : 'Create Quest'}
-        </Text>
+        <Text className="body1 text-white">{loading ? 'Generating...' : 'Create Quest'}</Text>
       </Pressable>
 
       <View className="mt-4 flex-1 items-center justify-center">
