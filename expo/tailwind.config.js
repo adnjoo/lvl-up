@@ -9,6 +9,8 @@ module.exports = {
         'spacegrotesk-regular': 'SpaceGrotesk-Regular',
         'spacegrotesk-medium': 'SpaceGrotesk-Medium',
         'spacegrotesk-bold': 'SpaceGrotesk-Bold',
+        'manrope-regular': 'Manrope-Regular',
+        'manrope-light': 'Manrope-Light',
       },
     },
   },

@@ -167,7 +167,7 @@ export default function QuestsScreen() {
       </View>
 
       <TextInput
-        className="mt-4 rounded-lg bg-gray-800 p-3 text-white"
+        className="mt-4 rounded-lg bg-gray-800 p-3 font-manrope-regular text-white"
         placeholder="Enter a quest idea or leave blank for AI"
         placeholderTextColor="#888"
         value={userInput}
@@ -175,7 +175,9 @@ export default function QuestsScreen() {
       />
 
       <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateQuest}>
-        <Text className="text-lg text-white">{loading ? 'Generating...' : 'Create Quest'}</Text>
+        <Text className="font-manrope-regular text-lg text-white">
+          {loading ? 'Generating...' : 'Create Quest'}
+        </Text>
       </Pressable>
 
       <View className="mt-4 flex-1 items-center justify-center">
