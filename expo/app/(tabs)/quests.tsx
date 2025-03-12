@@ -161,26 +161,28 @@ export default function QuestsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-900 p-6">
+    <View className="bg-brand-background flex-1 p-6">
       <View className="mt-10 items-center">
         <Text className="h1 text-white">QUESTS</Text>
       </View>
 
       <TextInput
-        className="body1 mt-4 rounded-lg bg-gray-800 p-3 text-white"
+        className="body1 bg-brand-background mt-4 rounded-lg p-3 text-white"
         placeholder="Enter a quest idea or leave blank for AI"
         placeholderTextColor="#888"
         value={userInput}
         onChangeText={setUserInput}
       />
 
-      <Pressable className="mt-4 rounded-lg bg-blue-500 px-6 py-3" onPress={generateQuest}>
+      <Pressable
+        className="bg-brand mt-4 rounded-lg px-6 py-3 active:scale-95"
+        onPress={generateQuest}>
         <Text className="body1 text-white">{loading ? 'Generating...' : 'Create Quest'}</Text>
       </Pressable>
 
       <View className="mt-4 flex-1 items-center justify-center">
         {loadingQuests ? (
-          <ActivityIndicator size="large" color="#4CAF50" />
+          <ActivityIndicator size="large" color="#22C55E" />
         ) : (
           <FlatList
             data={quests}

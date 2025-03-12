@@ -8,7 +8,7 @@ import { View, Text, TextInput, Pressable, Image, Alert } from 'react-native';
 
 import { auth } from '../../firebase';
 
-const ALPHA_CODE = 'test123'; // 🔥 Change this for private access
+const ALPHA_CODE = 'test123';
 
 export default function IndexScreen() {
   const router = useRouter();
@@ -67,25 +67,23 @@ export default function IndexScreen() {
             className="shadow-red-glow"
             resizeMode="contain"
           />
-          <Text className="h1 text-green-400">lvl up</Text>
+          <Text className="h1 text-success">lvl up</Text>
         </View>
 
         {/* Title */}
-        <Text className="h2 shadow-blue-glow mb-6 text-blue-400">
-          {isRegister ? 'Register' : 'Login'}
-        </Text>
+        <Text className="h2 text-brand mb-6">{isRegister ? 'Register' : 'Login'}</Text>
 
         {/* Input Fields */}
         <View className="w-full max-w-xs">
           <TextInput
-            className="body1 mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 lowercase text-white placeholder-gray-400"
+            className="body1 bg-brand-background mb-3 w-full rounded-lg px-4 py-3 lowercase text-white placeholder-gray-400"
             placeholder="Email"
             placeholderTextColor="#aaa"
             value={email}
             onChangeText={setEmail}
           />
           <TextInput
-            className="body1 mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
+            className="body1 bg-brand-background mb-3 w-full rounded-lg px-4 py-3 text-white placeholder-gray-400"
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
@@ -94,7 +92,7 @@ export default function IndexScreen() {
           />
           {isRegister && (
             <TextInput
-              className="body1 mb-3 w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400"
+              className="body1 bg-brand-background mb-3 w-full rounded-lg px-4 py-3 text-white placeholder-gray-400"
               placeholder="Alpha Code"
               placeholderTextColor="#aaa"
               value={alphaCode}
@@ -105,14 +103,14 @@ export default function IndexScreen() {
 
         {/* Auth Button */}
         <Pressable
-          className="mb-4 w-full max-w-xs items-center justify-center rounded-lg border border-blue-400 bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
+          className="border-brand-outline mb-4 w-full max-w-xs items-center justify-center rounded-lg border bg-transparent p-4 transition-all duration-200 hover:scale-105 active:scale-95"
           onPress={handleAuth}>
-          <Text className="body1 text-blue-400">{isRegister ? 'Sign Up' : 'Login'}</Text>
+          <Text className="body1 text-brand">{isRegister ? 'Sign Up' : 'Login'}</Text>
         </Pressable>
 
         {/* Toggle Text */}
         <Pressable onPress={() => setIsRegister(!isRegister)}>
-          <Text className="caption text-gray-400">
+          <Text className="caption text-neutral-outline">
             {isRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
           </Text>
         </Pressable>

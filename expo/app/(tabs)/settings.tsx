@@ -47,28 +47,30 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-900 p-6">
+    <View className="bg-brand-background flex-1 p-6">
       {/* Page Title */}
       <View className="mt-10 items-center">
         <Text className="h1 text-white">SETTINGS</Text>
       </View>
 
       {/* User Info */}
-      <View className="flex-1 items-center justify-center">
+      <View className="mt-16 flex-1 items-center">
         {loading ? (
-          <ActivityIndicator size="large" color="#ffffff" />
+          <ActivityIndicator size="large" color="#22C55E" />
         ) : user ? (
-          <View className="w-full max-w-sm rounded-lg bg-gray-800 p-4">
+          <View className="border-brand-outline w-full max-w-sm gap-2 rounded-lg border bg-[#131A26] p-4">
             <Text className="body1 text-white">Name: {user.name}</Text>
             <Text className="body1 text-white">Email: {user.email}</Text>
           </View>
         ) : (
-          <Text className="body1 text-red-400">No user data found.</Text>
+          <Text className="body1 text-error">No user data found.</Text>
         )}
       </View>
 
       {/* Logout Button */}
-      <Pressable className="mt-6 rounded-lg bg-red-500 px-6 py-3" onPress={handleLogout}>
+      <Pressable
+        className="bg-error mb-6 rounded-lg px-6 py-3 active:scale-95"
+        onPress={handleLogout}>
         <Text className="body1 text-white">Logout</Text>
       </Pressable>
     </View>

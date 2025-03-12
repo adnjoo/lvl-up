@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default function ProgressScreen() {
@@ -53,7 +53,7 @@ export default function ProgressScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-900 p-6">
+    <View className="bg-brand-background flex-1 p-6">
       {/* Title */}
       <View className="mt-10 items-center">
         <Text className="h1 text-white">PROGRESS</Text>
@@ -62,7 +62,7 @@ export default function ProgressScreen() {
       <View className="flex-1 items-center justify-center">
         {loading ? (
           <View className="items-center">
-            <ActivityIndicator size="large" color="#4CAF50" />
+            <ActivityIndicator size="large" color="#22C55E" />
             <Text className="caption mt-2 text-white">Loading progress...</Text>
           </View>
         ) : (
@@ -72,20 +72,14 @@ export default function ProgressScreen() {
               size={120}
               width={10}
               fill={(xp / xpNeeded) * 100}
-              tintColor="#4CAF50"
-              backgroundColor="#333"
+              tintColor="#22C55E" // success green
+              backgroundColor="#1F2937" // dark gray bg
               duration={1000}>
               {(fill) => <Text className="body1 text-white">{Math.round(fill)}%</Text>}
             </AnimatedCircularProgress>
             <Text className="body1 mt-4 text-white">
               XP: {xp} / {xpNeeded}
             </Text>
-
-            {/* <Pressable
-              className="mt-6 rounded-lg bg-blue-500 px-6 py-3"
-              onPress={() => console.log('View Achievements')}>
-              <Text className="body1 text-white">View Achievements</Text>
-            </Pressable> */}
           </>
         )}
       </View>
