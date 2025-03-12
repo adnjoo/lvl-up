@@ -1,3 +1,4 @@
+import { Manrope_400Regular, Manrope_300Light } from '@expo-google-fonts/manrope';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import useAuth from 'hooks/useAuth';
@@ -12,6 +13,8 @@ export default function Layout() {
     'SpaceGrotesk-Regular': require('../assets/fonts/SpaceGrotesk-Regular.ttf'),
     'SpaceGrotesk-Medium': require('../assets/fonts/SpaceGrotesk-Medium.ttf'),
     'SpaceGrotesk-Bold': require('../assets/fonts/SpaceGrotesk-Bold.ttf'),
+    'Manrope-Regular': Manrope_400Regular,
+    'Manrope-Light': Manrope_300Light,
   });
 
   if (!fontsLoaded) return null;
