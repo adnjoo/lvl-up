@@ -167,7 +167,7 @@ export default function QuestsScreen() {
       </View>
 
       <TextInput
-        className="body1 bg-brand-background mt-4 rounded-lg p-3 text-white"
+        className="body1 bg-white/5 mt-4 rounded-lg p-3 text-white"
         placeholder="Enter a quest idea or leave blank for AI"
         placeholderTextColor="#888"
         value={userInput}
