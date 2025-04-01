@@ -14,18 +14,18 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
+            title: 'Progress',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home-outline" size={size} color={color} />
+              <Ionicons name="bar-chart-outline" size={size} color={color} />
             ),
           }}
         />
         <Tabs.Screen
-          name="progress"
+          name="history"
           options={{
-            title: 'Progress',
+            title: 'History',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="bar-chart-outline" size={size} color={color} />
+              <Ionicons name="calendar-outline" size={size} color={color} />
             ),
           }}
         />
