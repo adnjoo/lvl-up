@@ -4,28 +4,11 @@ import { View, Text } from 'react-native';
 
 export default function HistoryScreen() {
   const router = useRouter();
-  const [typedText, setTypedText] = useState('');
-  const message = '[SYSTEM MESSAGE] Welcome, Hunter!';
-
-  useEffect(() => {
-    let index = 0;
-    setTypedText('');
-    const interval = setInterval(() => {
-      if (index < message.length) {
-        setTypedText((prev) => message.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <View className="flex-1 bg-brand-background p-6">
-      {/* Typing System Message */}
-      <View className="mt-10 min-h-[64px] items-center">
-        <Text className="h2 text-success">{typedText}</Text>
+      <View className="mt-10 items-center">
+        <Text className="h1 text-white">HISTORY</Text>
       </View>
     </View>
   );

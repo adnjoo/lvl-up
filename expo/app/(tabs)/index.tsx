@@ -9,8 +9,24 @@ export default function HomeScreen() {
   const [level, setLevel] = useState(1);
   const [xpNeeded, setXpNeeded] = useState(1000);
   const [loading, setLoading] = useState(true);
+  const [typedText, setTypedText] = useState('');
   const auth = getAuth();
   const db = getFirestore();
+  const message = '[SYSTEM MESSAGE] Welcome, Hunter!';
+
+  useEffect(() => {
+    let index = 0;
+    setTypedText('');
+    const interval = setInterval(() => {
+      if (index < message.length) {
+        setTypedText((prev) => message.slice(0, index + 1));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,9 +70,9 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 bg-brand-background p-6">
-      {/* Title */}
-      <View className="mt-10 items-center">
-        <Text className="h1 text-white">PROGRESS</Text>
+      {/* Typing System Message */}
+      <View className="mt-10 min-h-[64px] items-center">
+        <Text className="h2 text-success">{typedText}</Text>
       </View>
 
       <View className="flex-1 items-center justify-center">
