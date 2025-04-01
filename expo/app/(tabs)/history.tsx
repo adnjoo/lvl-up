@@ -1,9 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { View, Text } from 'react-native';
 
-export default function HomeScreen() {
+export default function HistoryScreen() {
   const router = useRouter();
   const [typedText, setTypedText] = useState('');
   const message = '[SYSTEM MESSAGE] Welcome, Hunter!';

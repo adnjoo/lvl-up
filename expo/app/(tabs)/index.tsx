@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
-export default function ProgressScreen() {
+export default function HomeScreen() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [xpNeeded, setXpNeeded] = useState(1000);
