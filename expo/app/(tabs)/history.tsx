@@ -7,6 +7,9 @@ export default function HistoryScreen() {
 
   return (
     <View className="flex-1 bg-brand-background p-6">
+      <View className="mt-10 items-center">
+        <Text className="h1 text-white">HISTORY</Text>
+      </View>
     </View>
   );
 }
