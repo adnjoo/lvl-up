@@ -19,7 +19,7 @@ This directory contains the **Expo-based mobile app**.
 
 3. **Run the App**  
    ```sh
-   expo start
+   npx expo start
    ```  
 
 ### Environment Variables  
