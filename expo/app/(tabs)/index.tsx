@@ -58,18 +58,6 @@ export default function HomeScreen() {
           </View>
         </Pressable>
       </View>
-
-      {/* Cat GIF at the bottom-right */}
-      <Image
-        source={require('assets/cat.gif')}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 20,
-          width: 50,
-          height: 50,
-        }}
-      />
     </View>
   );
 }

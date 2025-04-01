@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Image } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default function ProgressScreen() {
@@ -53,7 +53,7 @@ export default function ProgressScreen() {
   };
 
   return (
-    <View className="bg-brand-background flex-1 p-6">
+    <View className="flex-1 bg-brand-background p-6">
       {/* Title */}
       <View className="mt-10 items-center">
         <Text className="h1 text-white">PROGRESS</Text>
@@ -83,6 +83,17 @@ export default function ProgressScreen() {
           </>
         )}
       </View>
+      {/* Cat GIF at the bottom-right */}
+      <Image
+        source={require('assets/cat.gif')}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 20,
+          width: 50,
+          height: 50,
+        }}
+      />
     </View>
   );
 }
