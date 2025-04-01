@@ -1,63 +1,99 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ActivityIndicator, Image } from 'react-native';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
-export default function HomeScreen() {
-  const router = useRouter();
-  const [typedText, setTypedText] = useState('');
-  const message = '[SYSTEM MESSAGE] Welcome, Hunter!';
+export default function ProgressScreen() {
+  const [xp, setXp] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [xpNeeded, setXpNeeded] = useState(1000);
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const db = getFirestore();
 
   useEffect(() => {
-    let index = 0;
-    setTypedText('');
-    const interval = setInterval(() => {
-      if (index < message.length) {
-        setTypedText((prev) => message.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(interval);
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnapshot = await getDoc(userDocRef);
+
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        let currentXp = userData.xp || 0;
+        let currentLevel = userData.level || 1;
+        let requiredXp = userData.xpNeeded || calculateXpNeeded(currentLevel);
+
+        while (currentXp >= requiredXp) {
+          currentXp -= requiredXp;
+          currentLevel += 1;
+          requiredXp = calculateXpNeeded(currentLevel);
+        }
+
+        setXp(currentXp);
+        setLevel(currentLevel);
+        setXpNeeded(requiredXp);
+
+        await updateDoc(userDocRef, {
+          xp: currentXp,
+          level: currentLevel,
+          xpNeeded: requiredXp,
+        });
       }
-    }, 50);
-    return () => clearInterval(interval);
+
+      setLoading(false);
+    };
+
+    fetchUserData();
   }, []);
 
+  const calculateXpNeeded = (level: number) => {
+    return 1000 + level * 200;
+  };
+
   return (
-    <View className="bg-brand-background flex-1 p-6">
-      {/* Typing System Message */}
-      <View className="mt-10 min-h-[64px] items-center">
-        <Text className="h2 text-success">{typedText}</Text>
+    <View className="flex-1 bg-brand-background p-6">
+      {/* Title */}
+      <View className="mt-10 items-center">
+        <Text className="h1 text-white">PROGRESS</Text>
       </View>
 
-      {/* Main Nav Buttons */}
-      <View className="flex-1 items-center justify-center gap-4">
-        <Pressable
-          className="border-brand-outline w-full items-center justify-center rounded-lg border bg-transparent p-4 active:scale-95"
-          onPress={() => router.push('/progress')}>
-          <View className="flex-row items-center">
-            <Ionicons name="bar-chart" size={20} color="#4CAF50" style={{ marginRight: 8 }} />
-            <Text className="body1 text-brand font-semibold">View Progress</Text>
+      <View className="flex-1 items-center justify-center">
+        {loading ? (
+          <View className="items-center">
+            <ActivityIndicator size="large" color="#22C55E" />
+            <Text className="caption mt-2 text-white">Loading progress...</Text>
           </View>
-        </Pressable>
-
-        <Pressable
-          className="border-neutral-outline w-full items-center justify-center rounded-lg border bg-transparent p-4 active:scale-95"
-          onPress={() => router.push('/quests')}>
-          <View className="flex-row items-center">
-            <Ionicons name="trophy" size={20} color="#A78BFA" style={{ marginRight: 8 }} />
-            <Text className="body1 text-neutral font-semibold">Quests</Text>
-          </View>
-        </Pressable>
-
-        <Pressable
-          className="border-warning-outline w-full items-center justify-center rounded-lg border bg-transparent p-4 active:scale-95"
-          onPress={() => router.push('/settings')}>
-          <View className="flex-row items-center">
-            <Ionicons name="settings" size={20} color="#FCD34D" style={{ marginRight: 8 }} />
-            <Text className="body1 text-warning font-semibold">Settings</Text>
-          </View>
-        </Pressable>
+        ) : (
+          <>
+            <Text className="body1 mb-2 text-white">Level: {level}</Text>
+            <AnimatedCircularProgress
+              size={120}
+              width={10}
+              fill={(xp / xpNeeded) * 100}
+              tintColor="#22C55E" // success green
+              backgroundColor="#1F2937" // dark gray bg
+              duration={1000}>
+              {(fill) => <Text className="body1 text-white">{Math.round(fill)}%</Text>}
+            </AnimatedCircularProgress>
+            <Text className="body1 mt-4 text-white">
+              XP: {xp} / {xpNeeded}
+            </Text>
+          </>
+        )}
       </View>
+      {/* Cat GIF at the bottom-right */}
+      <Image
+        source={require('assets/cat.gif')}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 20,
+          width: 50,
+          height: 50,
+        }}
+      />
     </View>
   );
 }

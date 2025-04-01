@@ -12,7 +12,7 @@ export default function TabsLayout() {
           tabBarActiveTintColor: '#4CAF50', // Green for active tab
         }}>
         <Tabs.Screen
-          name="progress"
+          name="index"
           options={{
             title: 'Progress',
             tabBarIcon: ({ color, size }) => (
@@ -21,7 +21,7 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="index"
+          name="history"
           options={{
             title: 'History',
             tabBarIcon: ({ color, size }) => (
