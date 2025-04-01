@@ -147,6 +147,7 @@ export default function QuestsScreen() {
       let archivedQuests = userData.archivedQuests || [];
       let completedQuest = userData.quests.find((q) => q.id === questId);
       if (completedQuest) {
+        completedQuest.completedAt = new Date().toISOString().split('T')[0]; // e.g. "2024-04-01"
         archivedQuests.push(completedQuest);
       }
 

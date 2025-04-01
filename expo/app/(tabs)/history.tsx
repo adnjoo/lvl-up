@@ -1,37 +1,64 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 export default function HistoryScreen() {
   const router = useRouter();
-  const [selected, setSelected] = useState<string>('');
+  const [markedDates, setMarkedDates] = useState({});
+  const auth = getAuth();
+  const db = getFirestore();
+
+  useEffect(() => {
+    const fetchArchivedQuests = async () => {
+      if (!auth.currentUser) return;
+
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      const userSnapshot = await getDoc(userDocRef);
+
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        console.log('userData', userData);
+        const archivedQuests = userData.archivedQuests || [];
+
+        const dates = {};
+        archivedQuests.forEach(q => {
+          if (q.completedAt) {
+            dates[q.completedAt] = {
+              marked: true,
+              dotColor: '#22C55E', // green dot
+            };
+          }
+        });
+        console.log('dates', dates);
+
+        setMarkedDates(dates);
+      }
+    };
+
+    fetchArchivedQuests();
+  }, []);
 
   return (
     <View className="flex-1 bg-brand-background p-6">
-      <View className="mb-4 mt-10 items-center">
+      <View className="mt-10 items-center mb-4">
         <Text className="h1 text-white">HISTORY</Text>
       </View>
 
       <Calendar
-        onDayPress={(day) => setSelected(day.dateString)}
-        markedDates={{
-          '2024-01-05': { marked: true, selectedColor: '#FF4C4C', selected: true },
-          '2024-01-09': { selected: true, color: '#4C6FFF' },
-          '2024-01-10': { selected: true, color: '#4C6FFF' },
-          '2024-01-11': { selected: true, color: '#4C6FFF' },
-          [selected]: { selected: true, selectedColor: '#FFA500' },
-        }}
+        markedDates={markedDates}
         theme={{
           calendarBackground: '#0B0F23',
           textSectionTitleColor: '#FFFFFF',
           dayTextColor: '#FFFFFF',
           monthTextColor: '#FFFFFF',
-          selectedDayBackgroundColor: '#4C6FFF',
-          selectedDayTextColor: '#FFFFFF',
           todayTextColor: '#FF4C4C',
           arrowColor: '#FFFFFF',
           textDisabledColor: '#555555',
+          dotColor: '#22C55E',
+          selectedDotColor: '#22C55E',
         }}
       />
     </View>
