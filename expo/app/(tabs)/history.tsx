@@ -48,7 +48,6 @@ export default function HistoryScreen() {
 
   const handleDayPress = (day) => {
     const dateString = day.dateString;
-    console.log('Tapped!', dateString);
     const questsForDay = archivedQuests.filter((q) => q.completedAt === dateString);
     setSelectedDayQuests(questsForDay);
     bottomSheetRef.current?.expand();
@@ -86,7 +85,7 @@ export default function HistoryScreen() {
           {selectedDayQuests.length > 0 ? (
             <FlatList
               data={selectedDayQuests}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <Text className="mb-1 text-white">• {item.title || 'Unnamed Quest'}</Text>
               )}
