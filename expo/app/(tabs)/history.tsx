@@ -1,13 +1,19 @@
 import { useRouter } from 'expo-router';
-import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { View, Text, FlatList } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 export default function HistoryScreen() {
   const router = useRouter();
   const [markedDates, setMarkedDates] = useState({});
+  const [archivedQuests, setArchivedQuests] = useState([]);
+  const [selectedDayQuests, setSelectedDayQuests] = useState([]);
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
   const auth = getAuth();
   const db = getFirestore();
 
@@ -20,19 +26,18 @@ export default function HistoryScreen() {
 
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
-        console.log('userData', userData);
-        const archivedQuests = userData.archivedQuests || [];
+        const quests = userData.archivedQuests || [];
+        setArchivedQuests(quests);
 
         const dates = {};
-        archivedQuests.forEach(q => {
+        quests.forEach((q) => {
           if (q.completedAt) {
             dates[q.completedAt] = {
               marked: true,
-              dotColor: '#22C55E', // green dot
+              dotColor: '#22C55E',
             };
           }
         });
-        console.log('dates', dates);
 
         setMarkedDates(dates);
       }
@@ -41,14 +46,22 @@ export default function HistoryScreen() {
     fetchArchivedQuests();
   }, []);
 
+  const handleDayPress = (day) => {
+    const dateString = day.dateString;
+    const questsForDay = archivedQuests.filter((q) => q.completedAt === dateString);
+    setSelectedDayQuests(questsForDay);
+    bottomSheetRef.current?.expand();
+  };
+
   return (
     <View className="flex-1 bg-brand-background p-6">
-      <View className="mt-10 items-center mb-4">
+      <View className="mb-4 mt-10 items-center">
         <Text className="h1 text-white">HISTORY</Text>
       </View>
 
       <Calendar
         markedDates={markedDates}
+        onDayPress={handleDayPress}
         theme={{
           calendarBackground: '#0B0F23',
           textSectionTitleColor: '#FFFFFF',
@@ -61,6 +74,27 @@ export default function HistoryScreen() {
           selectedDotColor: '#22C55E',
         }}
       />
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose
+        backgroundStyle={{ backgroundColor: '#111827' }}>
+        <BottomSheetView className="p-4">
+          <Text className="mb-2 text-lg text-white">Quests on this day:</Text>
+          {selectedDayQuests.length > 0 ? (
+            <FlatList
+              data={selectedDayQuests}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <Text className="mb-1 text-white">• {item.title || 'Unnamed Quest'}</Text>
+              )}
+            />
+          ) : (
+            <Text className="text-gray-400">No quests found for this day.</Text>
+          )}
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   );
 }

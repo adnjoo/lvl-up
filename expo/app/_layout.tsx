@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Manrope_400Regular, Manrope_300Light } from '@expo-google-fonts/manrope';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -20,15 +21,19 @@ export default function Layout() {
 
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center bg-black">
-        <ActivityIndicator size="large" color="#4CAF50" />
-      </View>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View className="flex-1 items-center justify-center bg-black">
+          <ActivityIndicator size="large" color="#4CAF50" />
+        </View>
+      </GestureHandlerRootView>
     );
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {!user ? <Stack.Screen name="(auth)/auth" /> : <Stack.Screen name="(tabs)" />}
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        {!user ? <Stack.Screen name="(auth)/auth" /> : <Stack.Screen name="(tabs)" />}
+      </Stack>
+    </GestureHandlerRootView>
   );
 }
