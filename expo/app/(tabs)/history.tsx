@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
@@ -87,7 +87,19 @@ export default function HistoryScreen() {
               data={selectedDayQuests}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <Text className="mb-1 text-white">• {item.title || 'Unnamed Quest'}</Text>
+                <View className="mb-2">
+                  <Text className="text-white">• {item.title || 'Unnamed Quest'}</Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      router.push({
+                        pathname: '/(tabs)/edit-quest',
+                        params: { quest: JSON.stringify(item) },
+                      })
+                    }
+                    className="mt-1 self-start rounded bg-gray-700 px-2 py-1">
+                    <Text className="text-sm text-white">Edit</Text>
+                  </TouchableOpacity>
+                </View>
               )}
             />
           ) : (
