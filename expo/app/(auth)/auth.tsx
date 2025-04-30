@@ -76,7 +76,7 @@ export default function IndexScreen() {
         {/* Input Fields */}
         <View className="w-full max-w-xs">
           <TextInput
-            className="body1 bg-brand-background mb-3 w-full rounded-lg px-4 py-3 lowercase text-white placeholder-gray-400"
+            className="body1 bg-brand-background mb-3 w-full rounded-lg px-4 py-3 text-white placeholder-gray-400"
             placeholder="Email"
             placeholderTextColor="#aaa"
             value={email}
